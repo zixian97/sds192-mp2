@@ -1,0 +1,82 @@
+---
+title: 'Mini Project #2'
+author: "Cindy Lu"
+date: '2017-03-20'
+output: html_document
+---
+
+```{r,warning=FALSE,message=FALSE}
+#Load required packages
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(RColorBrewer)
+library(ggthemes)
+display.brewer.all()
+load("house_elections.rda")
+load("candidates.rda")
+load("committees.rda")
+load("contributions.rda")
+
+```
+
+
+```{r,warning=FALSE,message=FALSE}
+#Select certain columns
+#We only keep candidates whose election year is 2012
+#because the contribution transaction date is in 2011 and 2012 according to the contributions data table 
+#Therefore we conclude that the contributions in this data set will be most possibily directed to 2012's election or elections above 2012 
+Newcandidate <- candidates %>%
+  select(cand_id,cand_name,cand_party_affiliation,cand_election_yr,cand_state) %>%
+  filter(cand_election_yr == '2012') %>%
+  filter(cand_party_affiliation == 'REP'|cand_party_affiliation == 'DEM' )
+Newcontributions <- contributions %>%
+  select(name,transaction_amt,cand_id,state) %>%
+  group_by(cand_id) %>%
+  summarize(total_amt = sum(transaction_amt))
+#Join two data frames with candidate ID
+Newcandidate <- left_join(Newcandidate, Newcontributions, by = 'cand_id') 
+Newcandidate <- Newcandidate %>%
+  filter(!is.na(total_amt))
+
+Pcandidate <- Newcandidate %>%
+  group_by(cand_party_affiliation) %>%
+  summarize(Party_amt = sum(total_amt))
+myPlot1 <- ggplot(Pcandidate, aes(x = cand_party_affiliation, y = Party_amt)) + geom_bar(stat = "identity", width = 0.3) + scale_fill_brewer(palette = 'Oranges')
+myPlot1
+# Filter the replucation transaction amount received in different states
+REP_state <- Newcandidate %>%
+  filter(cand_party_affiliation == 'REP') %>%
+  group_by(cand_state) %>%
+  summarize(Rep_amt = sum(total_amt)) %>%
+  filter(!is.na(cand_state))
+DEM_state <- Newcandidate %>%
+  filter(cand_party_affiliation == 'DEM') %>%
+  group_by(cand_state) %>%
+  summarize(Dem_amt = sum(total_amt))
+Party_state <- REP_state%>%
+  left_join(DEM_state, by = 'cand_state')
+#In the data set there are some contributions of which the candidates who received do not indicate the states they represent 
+#For the convenience of our data analysis, we omit these rows of data   
+Party_state <- Party_state[-1,]
+Party_state <- Party_state %>%
+  mutate(comparison = Dem_amt > Rep_amt)
+
+Party_state_tidy <- Party_state %>%
+  gather(key = "Party", value = "contributions",-cand_state) %>%
+  group_by(cand_state)
+p <- ggplot(Party_state_tidy, aes(x = Party, y = contributions)) + geom_bar(stat = 'identity') +
+  facet_wrap(~cand_state, ncol = 10)
+p
+  
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
