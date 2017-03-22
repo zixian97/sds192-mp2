@@ -95,6 +95,8 @@ Vote_Party_stateD <- comparing_contributions("TRUE")
 Vote_Party_stateR$more_state
 Vote_Party_stateD$more_state
 ```
+ 
+
 #Blog Post 
 
 #Our analysis of data includes contributions from committee to Congressional campaigns and presidential campagins in 2012’s federal election cycle. 
@@ -103,5 +105,11 @@ Vote_Party_stateD$more_state
 #   Illinois and Massachusetts received much larger amount of contributions because the presidential candidates for Republican and Democrats come from these two states. (Barack H. Obama: Illinois; W. Mitt Romney: Massachusetts). Presidential elections usually recieve huge amount of contributions, compared to congression elections. 
 #  Because committees that are recorded in the data set include federal political action committees and party committees, campaign committees, their financial contributions to candidates from different political parties can represent their political atitudes. Their financial supports to different political parties can somehow reveal the influence a political party have both across U.S. and for each individual states. We believe that in general, during the election period, candidates from a political party with more influence will gain larger amount of financial contributions. However, the committees do not represent the voice of American people. It can only be an indictor of certain political and social power that a party holds. 
 # 	We are curious about how financial contributions relate to election result. Does the party that gain larger amount of financial support from committee eventually win the result? During 2012 U.S. Congressional election, Republican won the House(233:201); Democrats won Senate(54:45) . We are not able to give a conclusion that financial contributions from committees are directly related to the election result: the party with the largest amount of contributions did not become the dominant party in House, just as Trump spent less money than Hillary and becomes. U.S. president in 2016. 
+
+
+
+
+#One Sentence conclusion:
+#The data shows that in the 2012's Federal election Democratic candidates received more contributions from committee than Republicans in total, while Republicans take the lead in the statewide contributions.
 
 
