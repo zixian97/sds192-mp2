@@ -81,22 +81,26 @@ p
 ```
 
 ```{r,,warning = FALSE, message=FALSE}
-#Count how many states does Republican gets more contributions than Democrats
-Vote_Party_stateR <- Party_state %>%
-  filter(comparison == 'FALSE') %>%
-  summarize(more_state_R = n())
-#Count how many states does Republican gets less contributions than Democrats
-Vote_Party_stateD <- Party_state %>%
-  filter(comparison == 'TRUE') %>%
-  summarize(more_state_D = n())
+#Count how many states does the Political Party gets more contributions than the other Political Party
+comparing_contributions <- function(comparison_value){
+  Party_state %>%
+    filter(comparison == comparison_value)%>%
+    summarize(more_state = n())
+}
+Vote_Party_stateR <- comparing_contributions("FALSE")
+Vote_Party_stateD <- comparing_contributions("TRUE")
+
+
 #Show the result
-Vote_Party_stateR$more_state_R
-Vote_Party_stateD$more_state_D
+Vote_Party_stateR$more_state
+Vote_Party_stateD$more_state
 ```
 #Blog Post 
 
-#   With the data given, our group wants to find out which political party got the largest amount of contributions from committee for 2012's election. We wrangle the data and create the bar chart with ggplot. Since Democratic Party and Republican party are the two major parties that received most contributions from committee, we only compare these two parties's countribution while omitting other parties. With the bar chart, we can easily find that candidates from Democratic Party receive more contributions( ...) than candidates from Republican Party(...) did in the whole country. 
-#   We also sort the data by states, and create bar charts for individual states. These bar charts can provide a clear indiction about which political party's candidates in the certain states receive more contributions. (…) States contributes more to Democratic Party, and (…) States contribute more to Republican Party. 
+#Our analysis of data includes contributions from committee to Congressional campaigns and presidential campagins in 2012’s federal election cycle. 
+#   With the data given, our group wants to find out which political party got the largest amount of contributions from committee for 2012's election. We wrangle the data and create the bar chart with ggplot. Since Democratic Party and Republican party are the two major parties that received most contributions from committee, we only compare these two parties's countribution while omitting other parties. With the bar chart, we can easily find that candidates from Democratic Party receive more contributions( 924691822) than candidates from Republican Party(844932524) did in the whole country. 
+#   We also sort the data by states, and create bar charts for individual states. These bar charts can provide a clear indiction about which political party's candidates in the certain states receive more contributions. 20 States contributes more to Democratic Party, and 30 States contribute more to Republican Party. 
+#   Illinois and Massachusetts received much larger amount of contributions because the presidential candidates for Republican and Democrats come from these two states. (Barack H. Obama: Illinois; W. Mitt Romney: Massachusetts). Presidential elections usually recieve huge amount of contributions, compared to congression elections. 
 #  Because committees that are recorded in the data set include federal political action committees and party committees, campaign committees, their financial contributions to candidates from different political parties can represent their political atitudes. Their financial supports to different political parties can somehow reveal the influence a political party have both across U.S. and for each individual states. We believe that in general, during the election period, candidates from a political party with more influence will gain larger amount of financial contributions. However, the committees do not represent the voice of American people. It can only be an indictor of certain political and social power that a party holds. 
 # 	We are curious about how financial contributions relate to election result. Does the party that gain larger amount of financial support from committee eventually win the result? During 2012 U.S. Congressional election, Republican won the House(233:201); Democrats won Senate(54:45) . We are not able to give a conclusion that financial contributions from committees are directly related to the election result: the party with the largest amount of contributions did not become the dominant party in House, just as Trump spent less money than Hillary and becomes. U.S. president in 2016. 
 
